@@ -38,12 +38,10 @@
 
                 @can('product.edit')
                     <div class="mt-5 pt-4 border-t border-gray-100">
-                        <x-button
-                            href="{{ route('products.edit', $product) }}"
-                            variant="warning"
-                            size="sm"
+                        <x-button href="{{ route('products.edit', $product) }}" variant="warning" size="sm"
                             class="w-full justify-center">
-                            ✏️ Edit Barang
+                            <x-heroicon-o-pencil-square class="w-4 h-4" />
+                            Edit
                         </x-button>
                     </div>
                 @endcan
@@ -66,7 +64,7 @@
                                 {{ number_format($stock->stok) }} pcs
                             </td>
                             <td class="px-4 py-3">
-                                @if($stock->stok === 0)
+                                @if ($stock->stok === 0)
                                     <x-badge color="red">Habis</x-badge>
                                 @elseif($stock->stok <= 10)
                                     <x-badge color="yellow">Menipis</x-badge>

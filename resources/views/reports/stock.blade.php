@@ -55,6 +55,25 @@
         </x-card>
     </div>
 
+    <div class="flex gap-2 mb-4">
+        @can('report.print')
+            <a href="{{ route('pdf.stock', request()->query()) }}" target="_blank"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700
+                  text-white text-sm font-medium rounded-lg transition">
+                <x-heroicon-o-printer class="w-4 h-4" />
+                Print PDF
+            </a>
+        @endcan
+        @can('report.export')
+            <a href="{{ route('excel.stock', request()->query()) }}"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700
+                  text-white text-sm font-medium rounded-lg transition">
+                <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                Export Excel
+            </a>
+        @endcan
+    </div>
+
     <x-card title="Hasil Laporan Stok">
         <x-table :headers="['Tanggal', 'Barang', 'Jenis', 'Jumlah', 'Keterangan', 'Dicatat Oleh']">
             @forelse($histories as $h)
