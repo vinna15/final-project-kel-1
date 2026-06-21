@@ -69,4 +69,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stocks',       [ReportController::class, 'stock'])      ->name('stock');
     });
 
+    // PDF 
+    Route::middleware(['role:owner|manager|supervisor'])->prefix('pdf')->name('pdf.')->group(function () {
+        Route::get('/transactions', [PdfController::class, 'transaction'])->name('transaction');
+        Route::get('/stocks',       [PdfController::class, 'stock'])      ->name('stock');
+    });
+
+    Route::middleware(['role:owner|kasir'])->group(function () {
+        Route::get('/pdf/receipt/{transaction}', [PdfController::class, 'receipt'])->name('pdf.receipt');
+    });
+
+    // EXCEL 
+    Route::middleware(['role:owner|manager'])->prefix('excel')->name('excel.')->group(function () {
+        Route::get('/transactions', [ExcelController::class, 'transaction'])->name('transaction');
+        Route::get('/stocks',       [ExcelController::class, 'stock'])      ->name('stock');
+    });
+
 });

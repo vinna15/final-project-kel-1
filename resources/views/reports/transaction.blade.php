@@ -3,13 +3,27 @@
     {{-- Filter --}}
     <x-card class="mb-4">
         <form method="GET" class="flex items-end gap-3 flex-wrap">
-            <x-input label="Dari Tanggal" name="dari"   type="date" value="{{ request('dari') }}" />
-            <x-input label="Sampai"       name="sampai" type="date" value="{{ request('sampai') }}" />
+            <x-input label="Dari Tanggal" name="dari" type="date" value="{{ request('dari') }}" />
+            <x-input label="Sampai" name="sampai" type="date" value="{{ request('sampai') }}" />
             <div class="flex gap-2 items-end">
                 <x-button type="submit" variant="primary" size="sm">Filter</x-button>
                 <x-button href="{{ route('reports.transaction') }}" variant="secondary" size="sm">
                     Reset
                 </x-button>
+                <a href="{{ route('pdf.transaction', request()->query()) }}" target="_blank"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700
+                          text-white text-sm font-medium rounded-lg transition">
+                    <x-heroicon-o-printer class="w-4 h-4" />
+                    Print PDF
+                </a>
+                @role('owner|manager')
+                    <a href="{{ route('excel.transaction', request()->query()) }}"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700
+                              text-white text-sm font-medium rounded-lg transition">
+                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        Export Excel
+                    </a>
+                @endrole
             </div>
         </form>
     </x-card>
@@ -48,10 +62,7 @@
                         Rp {{ number_format($trx->total, 0, ',', '.') }}
                     </td>
                     <td class="px-4 py-3">
-                        <x-button
-                            href="{{ route('transactions.show', $trx) }}"
-                            variant="secondary"
-                            size="sm">
+                        <x-button href="{{ route('transactions.show', $trx) }}" variant="secondary" size="sm">
                             Detail
                         </x-button>
                     </td>
@@ -66,7 +77,7 @@
         </x-table>
 
         {{-- Grand Total  --}}
-        @if($transactions->count() > 0)
+        @if ($transactions->count() > 0)
             <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
                 <span class="text-sm text-gray-500">
                     Menampilkan {{ $transactions->count() }} dari {{ $transactions->total() }} transaksi
